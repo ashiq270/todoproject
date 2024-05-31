@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+     {% if category %}
+         {{category.description|truncatewords:155}}
+     {% else %}
+         Welcome to AS store where you can buy different items......
+     {% endif %}
+{% endblock %}
+
+{% block title %}
+    {% if category %}
+       {{category.name}} -AS store
+    {% else %}
+        See our new collections -AS store
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    {% if category %}
+        <div>
+            <div class="row my_row_class">
+                <div class="mx_auto">
+
+
+                <p><a href="{% url 'shopapp:allProdCat' %}">Our product collections</a></p>
+
+            </div>
+                 </div>
+
+        </div>
+    {% endif %}
+<div class="mx_auto">
+    {% if category %}
+        <img class="my_image" src ="{{category.image.url}}" alt = "{{category.name}}">
+
+</div>
+  <br>
+<div>
+        <h1 class="text-center my_title">{{category.name}}</h1>
+        <p class="text-justify">{{category.description}}</p>
+</div>
+     {% else %}
+<div>
+    <img class="my_image my_image_padding" src = "{% static 'img/banner.png' %}" alt="our products" width="1500px" ; height="500px">
+
+</div>
+<br>
+<div>
+        <h1 class="text-center my-title">Our products collections</h1>
+        <p class="text-justify">
+Introducing ShopSmart, the ultimate shopping app designed to revolutionize your retail experience. With a sleek interface and intuitive navigation, ShopSmart makes finding and purchasing products a breeze. Browse through our extensive catalog of items, from trendy fashion pieces to must-have gadgets and everything in between. Enjoy personalized recommendations tailored to your preferences, ensuring you never miss out on the latest trends or deals. With secure payment options and convenient delivery services, shopping has never been easier. Plus, take advantage of exclusive discounts and promotions available only to ShopSmart users. Whether you're shopping for yourself or searching for the perfect gift, ShopSmart has you covered. Download the app today and discover a smarter way to shop!</p>
+</div>
+    {% endif %}
+<div class="container">
+    <div class="row mx_auto">
+        {% for product in products.object_list %}
+        <div class="my_bottom_margin col-9 col-sm-12 col-md-4 col-lg-4">
+            <div class="card text-center" style="min-width:18rem;">
+                <a href="{{product.get_url}}"><img class="card-img-top my_image" src="{{product.image.url}}" alt="{{product.name}} "></a>
+                <div class="card-body">
+                    <h4>{{product.name}}</h4>
+                    <p>₹{{product.price}} Only/-</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="mx-auto">
+        {% if products.paginator.num_pages > 1 %}
+
+        <hr>
+        <div class="text-center">
+            {% for pg in products.paginator.page_range %}
+            <a href="?page={{pg}}" class="btn btn-light btn-sm {% if products.number == pg %}active{% endif %}">{{pg}}</a>
+            {% endfor %}
+
+        </div>
+        {% endif %}
+    </div>
+    <br>
+</div>
+{% endblock %}
+
+
+
+
